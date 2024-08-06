@@ -1,0 +1,56 @@
+target C {
+    //timeout: 1 sec,
+    tracing: true,
+    trace-plugin: telegraf_lf_trace_plugin,
+    docker: {
+      builder-base: "xronosinc/lf-trace-plugin-api:v1.2-c",
+      pre-run-script: "container-environment.sh"
+    }
+  }
+
+reactor A {
+    output out:int
+    timer t (0, 100 ms)
+    state counter:int=0
+
+    reaction(t) -> out {=
+        lf_print("%d",self->counter++);
+        lf_print ("A");
+        lf_set (out, 1);
+    =}
+}
+
+reactor Y {
+    input in:int
+    logical action e;
+
+
+    @label("B")
+    reaction(in) -> e {=
+        lf_print("B");
+    =}
+
+    @label("C")
+    reaction(in) -> e {=
+        lf_print("C");
+    =}
+
+    @label("D")
+    reaction(in) -> e {=
+        lf_print("D");
+        lf_schedule(e,0);
+    =}
+
+    @label("E")
+    reaction (e) {=
+        lf_print("E\n");
+    =}
+
+}
+
+main reactor {
+    a = new A()
+    y = new Y()
+    
+    a.out -> y.in
+}
