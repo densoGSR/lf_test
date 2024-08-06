@@ -25,5 +25,11 @@ Grafana
 - username: `admin`
 - password: `linguafranca`
 
+## Test Result
+
+Single Thread
+![Single]()
+Multi Thread
+Timer
 
 [def]: https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Single_Thread.png
