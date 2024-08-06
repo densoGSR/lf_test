@@ -1,11 +1,11 @@
-### Xronos Dashboard Test
+## Xronos Dashboard Test
 
 | LF Test code | Description | Diagram |
-|:-----------|:------------|:------------:|
-| Single_Tread.lf     | This        | This         |
+|----|----|----|
+| Single_Tread.lf     | This        | ![Single_Thread][def]         |
 | Multi_Tread.lf     | This        | This         |
 
-### Test Instruction
+## Test Instruction
 
 Run Xronos-Dashboard
 
@@ -18,3 +18,6 @@ Docker Run
 ```sh
 docker run --network xronos-dashboard --rm -it single_thread-main
 ```
+
+
+[def]: https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Single_Thread.png
