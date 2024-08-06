@@ -28,8 +28,12 @@ Grafana
 ## Test Result
 
 Single Thread
-![Single]()
+![Single](https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Single_Thread_Result.png)
+
 Multi Thread
+![Multi](https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Multi_Thread_Result.png)
+
 Timer
+![Timer](https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Timer_Result.png)
 
 [def]: https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Single_Thread.png
