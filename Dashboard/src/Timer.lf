@@ -1,0 +1,36 @@
+target C {
+    tracing: true,
+    trace-plugin: telegraf_lf_trace_plugin,
+    docker: {
+      builder-base: "xronosinc/lf-trace-plugin-api:v1.2-c",
+      pre-run-script: "container-environment.sh"
+    }
+}
+
+reactor print {
+    input in:int
+
+    reaction (in) {=
+        printf("Logical time is %lld.\n", lf_time_logical());
+
+    =}
+}
+
+reactor sensor {
+    output out:int
+
+    timer t(0, 1 sec)
+    
+    reaction(t) -> out {=
+        lf_set(out, 1);
+    =}
+    
+}
+
+main reactor {
+    t = new sensor()
+    p = new print()
+
+    t.out -> p.in
+
+}
