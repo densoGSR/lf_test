@@ -1,4 +1,11 @@
 ## Xronos Dashboard Test
+Use some simple Lingua Franca programs to test whether the dashboard can visualize the expected software behavior
+
+Checkpoint
+- Reactor Run Order
+- Reaction execution time
+
+### Test Program
 
 | LF Test code | Description | Diagram |
 |----|----|----|
