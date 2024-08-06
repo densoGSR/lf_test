@@ -20,6 +20,10 @@ Docker Run
 ```sh
 docker run --network xronos-dashboard --rm -it single_thread-main
 ```
+Grafana
+- host: `http://localhost:3000`
+- username: `admin`
+- password: `linguafranca`
 
 
 [def]: https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Single_Thread.png
