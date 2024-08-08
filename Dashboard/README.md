@@ -3,6 +3,7 @@ Use some simple Lingua Franca programs to test whether the dashboard can visuali
 
 Checkpoint
 - Reactor Run Order
+- Reactor execution timing (e.g periodically) and jitter
 - Reaction execution time
 
 ## Test Program
