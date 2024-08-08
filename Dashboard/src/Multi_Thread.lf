@@ -13,7 +13,7 @@ reactor A {
     timer t (0, 100 ms)
 
     reaction(t) -> out {=
-        lf_sleep (MSEC(50));
+        lf_sleep (MSEC(10));
         lf_print ("count = %d", self->counter++);
         lf_print ("A");
         lf_set (out, 1);

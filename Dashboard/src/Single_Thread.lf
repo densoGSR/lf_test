@@ -14,6 +14,7 @@ reactor A {
     state counter:int=0
 
     reaction(t) -> out {=
+        lf_sleep(MSEC(10));
         lf_print("%d",self->counter++);
         lf_print ("A");
         lf_set (out, 1);
