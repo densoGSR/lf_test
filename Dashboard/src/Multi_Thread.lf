@@ -26,7 +26,7 @@ reactor B {
     output out:int
 
     reaction (in) -> out {=
-
+        lf_sleep (MSEC(15));
         lf_print ("B");
         lf_set (out, 1);
     =}
@@ -36,6 +36,7 @@ reactor C {
     input in:int
     output out:int
     reaction (in) -> out {=
+        lf_sleep (MSEC(20));
         lf_print ("C");
         lf_set (out, 1);
     =}
@@ -45,6 +46,7 @@ reactor D {
     input in:int
     output out:int
     reaction (in) -> out {=
+        lf_sleep (MSEC(25));
         lf_print ("D");
         lf_set (out, 1);
     =}
@@ -56,6 +58,7 @@ reactor E {
     input in3:int
 
     reaction (in1,in2,in3) {=
+        lf_sleep (MSEC(30));
         lf_print ("E\n");
  
     =}
