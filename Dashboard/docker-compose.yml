@@ -1,0 +1,24 @@
+name: dashboard-test
+
+services:
+  single_thread:
+    pull_policy: missing
+    build:
+      context: ./src-gen/Single_Thread/
+    container_name: single_thread
+    hostname: single_thread
+    networks:
+      - xronos-dashboard
+    environment:
+      LF_TELEGRAF_HOST_NAME: ${LF_TELEGRAF_HOST_NAME:-host.docker.internal}
+    stop_signal: SIGINT
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    tty: true
+
+networks:
+  xronos-dashboard:
+    name: xronos-dashboard
+    driver: bridge
+    external: true
+    
