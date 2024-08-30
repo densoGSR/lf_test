@@ -8,6 +8,5 @@
 - Rum xronos-dashboard
 - Run target federates
 ```sh
-cd fed-gen/SimpleFeedForward/src-gen
-docker compose up
+bin/LiveDestination
 ```
