@@ -3,7 +3,7 @@ target C {
     trace-plugin: telegraf_lf_trace_plugin,
     docker: {
       builder-base: "xronosinc/lf-trace-plugin-api:v1.2-c",
-      pre-run-script: "container-environment.sh"
+      //pre-run-script: "container-environment.sh"
     }
 }
 
