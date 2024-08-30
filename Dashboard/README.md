@@ -8,11 +8,28 @@ Checkpoint
 
 ## Test Program
 
-| LF Test code | Description | Diagram |
-|----|----|----|
-| [Single_Tread.lf](https://github.com/densoGSR/lf_test/blob/main/Dashboard/src/Single_Thread.lf)     | Test Single Thread LF program | ![Single_Thread][def]         |
-| [Multi_Tread.lf](https://github.com/densoGSR/lf_test/blob/main/Dashboard/src/Multi_Thread.lf)     | Test Multi Thread LF program | ![Multi_Thread](https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Multi_Thread.png)        |
-| [Timer.lf](https://github.com/densoGSR/lf_test/blob/main/Dashboard/src/Timer.lf)     | A simple test program that runs the sensor reactor periodically and displays the sensor output in the print reactor. | ![Timer](https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Timer.png)       |
+<table>
+<tr>
+<td> <b>LF Test code</b> </td>
+<td> <b>Description</b> </td>
+<td> <b>Diagram</b> </td>
+</tr>
+<tr>
+<td> <a href="src/Single_Thread.lf">Single_Thread.lf</a>
+<td> Test Single Thread LF program </td>
+<td> <img src="doc/pic/Single_Thread.png" alt="Single_Thread.png" width="400">
+</tr>
+<tr>
+<td> <a href="src/Multi_Thread.lf">Multi_Thread.lf</a>
+<td> Test Multi Thread LF program </td>
+<td> <img src="doc/pic/Multi_Thread.png" alt="Multi_Thread.png" width="400">
+</tr>
+<tr>
+<td> <a href="src/Timer.lf">Timer.lf</a>
+<td> A simple test program that runs the sensor reactor periodically and displays the sensor output in the print reactor.  </td>
+<td> <img src="doc/pic/Timer.png" alt="Timer.png" width="400">
+</tr>
+</table>
 
 ## Test Instruction
 
