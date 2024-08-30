@@ -1,5 +1,11 @@
 target C {
-    coordination: decentralized
+    coordination: decentralized,
+    tracing: true,
+    trace-plugin: telegraf_lf_trace_plugin,
+    docker: {
+      builder-base: "xronosinc/lf-trace-plugin-api:v1.2-c",
+      //pre-run-script: "../container-environment.sh"
+    }
   }
   
   import Count from "../lib/Count.lf"
