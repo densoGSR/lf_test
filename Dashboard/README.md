@@ -60,5 +60,3 @@ Multi Thread
 
 Timer
 <img src="doc/pic/Timer_Result.png" alt="Timer_Result">
-
-[def]: https://github.com/densoGSR/lf_test/blob/main/Dashboard/doc/pic/Single_Thread.png
