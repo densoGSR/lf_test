@@ -8,5 +8,5 @@
 - Rum xronos-dashboard
 - Run target federates
 ```sh
-bin/LiveDestination
+bin/SimpleFeedForward 
 ```
