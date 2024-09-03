@@ -38,12 +38,12 @@ Run Xronos-Dashboard
 
 Compile LF file
 ```sh
-lfc src/Single_Thread.lf
+lfc src/Single_Thread.lf -c
 ```
 
 Docker Run 
 ```sh
-docker run --network xronos-dashboard --rm -it single_thread-main
+docker compose -f ./src-gen/Single_Thread/docker-compose.yml up
 ```
 Grafana
 - host: `http://localhost:3000`
