@@ -3,119 +3,113 @@
  * @author Ravi Akella, DENSO
  * @author Marten Lohstroh, UC Berkeley
  */
- target C {
-    //timeout: 1 sec,
-    tracing: true,
-    trace-plugin: telegraf_lf_trace_plugin,
-    docker: {
-        builder-base: "xronosinc/lf-trace-plugin-api:v1.2-c",
-        pre-run-script: "container-environment.sh"
-    }
-  }
-    
-    preamble {=
-      #include "platform.h"
-      #include <stdlib.h>
-    =}
-  
-    reactor A_Camera(period: time = 40 ms) {
-      timer t(0, period)
-      output out: int
-      state count: int
-    
-      reaction(t) -> out {=
-        lf_set(out, self->count);
-        self->count++;
-      =}
-    }
 
-    reactor B_Lidar(period: time = 200 ms) {
-        timer t(0, period)
-        output out: int
-        state count: int
+target C {
+  docker: {
+    builder-base: "xronosinc/lf-trace-plugin-api:c",
+    no-build: true
+  },
+  tracing: true,
+  trace-plugin: "telegraf_lf_trace_plugin"
+}
+    
+reactor A_Camera(period: time = 40 ms) {
+  timer t(0, period)
+  output out: int
+  state count: int
+    
+  reaction(t) -> out {=
+    lf_set(out, self->count);
+      self->count++;
+  =}
+}
+
+reactor B_Lidar(period: time = 200 ms) {
+  timer t(0, period)
+  output out: int
+  state count: int
       
-        reaction(t) -> out {=
-          lf_set(out, self->count);
-          self->count++;
-        =}
-      }
+  reaction(t) -> out {=
+    lf_set(out, self->count);
+    self->count++;
+  =}
+}
     
-    reactor C_Processor(processingTime: time = 10 ms) {
-      input[2] inp: int
-      output out: int
-      logical action a(processingTime): int
+reactor C_Processor(processingTime: time = 10 ms) {
+  input[2] inp: int
+  output out: int
+  logical action a(processingTime): int
     
-      reaction(inp) -> a {=
-        //lf_sleep(self->processingTime);
-        lf_sleep(MSEC(20));
-        bool synced = false;
-        if (inp[0]->is_present && inp[1]->is_present) {
-           synced = true;
-           printf("\n---- SYNC'ED ----\n");
-        }
-        if (inp[0]->is_present) {
-            printf(">>> camera frame: %d\n", inp[0]->value);
-        }
-        if (inp[1]->is_present) {
-            printf(">>>> lidar frame: %d\n", inp[1]->value);
-        }
-        if (synced) {
-          lf_schedule_int(a, 0, inp[0]->value*inp[1]->value);
-          printf("-----------------\n\n");
+  reaction(inp) -> a {=
+    //lf_sleep(self->processingTime);
+    lf_sleep(MSEC(20));
+    bool synced = false;
+    if (inp[0]->is_present && inp[1]->is_present) {
+      synced = true;
+      printf("\n---- SYNC'ED ----\n");
+    }
+    if (inp[0]->is_present) {
+      printf(">>> camera frame: %d\n", inp[0]->value);
+    }
+    if (inp[1]->is_present) {
+      printf(">>>> lidar frame: %d\n", inp[1]->value);
+    }
+    if (synced) {
+      lf_schedule_int(a, 0, inp[0]->value*inp[1]->value);
+      printf("-----------------\n\n");
     
-          interval_t logical_elapsed = lf_time_logical_elapsed();
-          interval_t diff_us = (lf_time_physical_elapsed() - logical_elapsed) / 1000;
-          printf("(processor lagging physical time by %lld us at %lld ms)\n", diff_us, logical_elapsed / 1000000);
-        }
-      =}
+      interval_t logical_elapsed = lf_time_logical_elapsed();
+      interval_t diff_us = (lf_time_physical_elapsed() - logical_elapsed) / 1000;
+      printf("(processor lagging physical time by %lld us at %lld ms)\n", diff_us, logical_elapsed / 1000000);
+    }
+  =}
     
-      reaction(a) -> out {=
-        interval_t logical_elapsed = lf_time_logical_elapsed();
+  reaction(a) -> out {=
+    interval_t logical_elapsed = lf_time_logical_elapsed();
         interval_t diff_us = (lf_time_physical_elapsed() - logical_elapsed) / 1000;
         printf("(processor lagging physical time by %lld us at %lld ms <<after action>>)\n", diff_us, logical_elapsed / 1000000);
         lf_set(out, a->value);
       =}
     }
   
-    reactor D_Brakes extends Actuator {
-    }
+reactor D_Brakes extends Actuator {
+}
     
-    reactor E_Display extends Actuator {
-    }
+reactor E_Display extends Actuator {
+}
     
-    reactor Actuator(name: char* = "actuator", maxLag: time = 150 ms) {
-      input inp: int
-      state misses: int = 0
+reactor Actuator(name: char* = "actuator", maxLag: time = 150 ms) {
+  input inp: int
+  state misses: int = 0
+        
+  reaction(inp) {=
+    interval_t logical_elapsed = lf_time_logical_elapsed();
+    interval_t diff_us = (lf_time_physical_elapsed() - logical_elapsed) / 1000;
+    printf("(%s lagging physical time by %lld us at %lld ms)\n", self->name, diff_us, logical_elapsed / 1000000);
+  =} deadline(maxLag) {=
+    self->misses++;
+    printf("---- DEADLINE MISS ----\n");
+    interval_t logical_elapsed = lf_time_logical_elapsed();
+    interval_t diff_us = (lf_time_physical_elapsed() - logical_elapsed) / 1000;
+    printf("(%s lagging physical time by %lld us at %lld ms)\n", self->name, diff_us, logical_elapsed / 1000000);
+    printf("---- DEADLINE MISS ----\n");
+  =}
+  reaction(shutdown) {=
+    printf("---- Deadline misses at %s: %d\n", self->name, self->misses);
+  =}
+}
     
-      
-    reaction(inp) {=
-        interval_t logical_elapsed = lf_time_logical_elapsed();
-        interval_t diff_us = (lf_time_physical_elapsed() - logical_elapsed) / 1000;
-        printf("(%s lagging physical time by %lld us at %lld ms)\n", self->name, diff_us, logical_elapsed / 1000000);
-      =} deadline(maxLag) {=
-        self->misses++;
-        printf("---- DEADLINE MISS ----\n");
-        interval_t logical_elapsed = lf_time_logical_elapsed();
-        interval_t diff_us = (lf_time_physical_elapsed() - logical_elapsed) / 1000;
-        printf("(%s lagging physical time by %lld us at %lld ms)\n", self->name, diff_us, logical_elapsed / 1000000);
-        printf("---- DEADLINE MISS ----\n");
-      =}
-      reaction(shutdown) {=
-        printf("---- Deadline misses at %s: %d\n", self->name, self->misses);
-      =}
-    }
+main reactor(processingTime: time = 30 ms) { 
+  //Note: Try processing time to >40 ms to avoid deadlines
+  A_camera = new A_Camera(period = 40 ms)
+  B_lidar = new B_Lidar(period = 200 ms)  // 5hz
     
-    main reactor(processingTime: time = 30 ms) { 
-      //Note: Try processing time to >40 ms to avoid deadlines
-      A_camera = new A_Camera(period = 40 ms)
-      B_lidar = new B_Lidar(period = 200 ms)  // 5hz
+  C_processor = new C_Processor(processingTime=processingTime)
+  E_display = new E_Display(name="display")
+  D_brakes = new D_Brakes(name="brakes", maxLag = 10 ms)
     
-      C_processor = new C_Processor(processingTime=processingTime)
-      E_display = new E_Display(name="display")
-      D_brakes = new D_Brakes(name="brakes", maxLag = 10 ms)
+  A_camera.out, B_lidar.out -> C_processor.inp
     
-      A_camera.out, B_lidar.out -> C_processor.inp
-    
-      C_processor.out -> E_display.inp
-      C_processor.out -> D_brakes.inp
-    }
+  C_processor.out -> E_display.inp
+  C_processor.out -> D_brakes.inp
+}
