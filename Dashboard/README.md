@@ -29,6 +29,11 @@ Checkpoint
 <td> A simple test program that runs the sensor reactor periodically and displays the sensor output in the print reactor.  </td>
 <td> <img src="doc/pic/Timer.png" alt="Timer.png" width="400">
 </tr>
+<tr>
+<td> <a href="src/ADASApp.lf">ADASApp.lf</a>
+<td> A simple test program to emulate typical ADAS software structure</td>
+<td> <img src="doc/pic/ADASApp.png" alt="ADASApp.png" width="400">
+</tr>
 </table>
 
 ## Test Instruction
