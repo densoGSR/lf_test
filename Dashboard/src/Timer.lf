@@ -1,10 +1,10 @@
 target C {
-    tracing: true,
-    trace-plugin: telegraf_lf_trace_plugin,
     docker: {
-      builder-base: "xronosinc/lf-trace-plugin-api:v1.2-c",
-      pre-run-script: "container-environment.sh"
-    }
+      builder-base: "xronosinc/lf-trace-plugin-api:c",
+      no-build: true
+    },
+    tracing: true,
+    trace-plugin: "telegraf_lf_trace_plugin"
 }
 
 reactor print {
