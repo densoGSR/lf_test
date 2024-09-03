@@ -1,5 +1,0 @@
-#!/bin/bash
-
-export LF_TELEGRAF_HOST_NAME=${LF_TELEGRAF_HOST_NAME:-host.docker.internal}
-export LF_TELEGRAF_PORT=${LF_TELEGRAF_PORT:-8094}
-export LF_TELEGRAF_URL_PATH=${LF_TELEGRAF_URL_PATH:-/telegraf}
