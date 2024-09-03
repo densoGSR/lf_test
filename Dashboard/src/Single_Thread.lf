@@ -7,7 +7,6 @@ target C {
     trace-plugin: "telegraf_lf_trace_plugin"
 }
 
-
 reactor A {
     output out:int
     timer t (0, 100 ms)
